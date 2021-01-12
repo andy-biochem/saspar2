@@ -1,0 +1,5 @@
+TITLE     water1
+MODEL        1
+ATOM      1  O   HOH A   1      29.367  19.523  12.441  1.00  0.00           O
+ENDMDL
+END   
