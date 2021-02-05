@@ -115,33 +115,16 @@ def rm_element(pdb_lines,el_sym):
 # input: cortage of strings of pdb file; record_type (ATOM or HETATM)
 # output:  cortage of coordinates
 def get_lim_pos(pdb_lines,line_type ='ATOM',bad_res=[]):
+	prot_x = []
+	prot_y = []
+	prot_z = []
 	for line in pdb_lines:
-		if line.startswith(line_type):
+		if ((line.startswith('HETATM') and line_type == 'ALL') or line.startswith('ATOM')) and (not (get_residue(line) in bad_res)):
 			atom_arr = to_arr(line)
-			prot_min_x = atom_arr[0]
-			prot_max_x = atom_arr[0]
-			prot_min_y = atom_arr[1]
-			prot_max_y = atom_arr[1]
-			prot_min_z = atom_arr[2]
-			prot_max_z = atom_arr[2]
-			break
-	
-	for line in pdb_lines:
-		if line.startswith(line_type) and (not (get_residue(line) in bad_res)):
-			atom_arr = to_arr(line)
-			if atom_arr[0] < prot_min_x:
-				prot_min_x = atom_arr[0]
-			if atom_arr[0] > prot_max_x:
-				prot_max_x = atom_arr[0]
-			if atom_arr[1] < prot_min_y:
-				prot_min_y = atom_arr[1]
-			if atom_arr[1] > prot_max_y:
-				prot_max_y = atom_arr[1]
-			if atom_arr[2] < prot_min_z:
-				prot_min_z = atom_arr[2]
-			if atom_arr[2] > prot_max_z:
-				prot_max_z = atom_arr[2]
-	return [prot_min_x,prot_max_x,prot_min_y,prot_max_y,prot_min_z,prot_max_z]
+			prot_x.append(atom_arr[0])
+			prot_y.append(atom_arr[1])
+			prot_z.append(atom_arr[2])
+	return [min(prot_x),max(prot_x),min(prot_y),max(prot_y),min(prot_z),max(prot_z)]
 
 def shift_pdb(pdb_lines,shift_arr):
 	result_lines = []

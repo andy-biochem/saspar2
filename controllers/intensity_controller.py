@@ -50,13 +50,21 @@ def amplitude_compute_gpu_version_4(gpu_frame_x,gpu_frame_y,gpu_frame_z,gpu_fact
     gpu_dot_1 = gpu_frame_1.__mul__(vector[1])
     gpu_dot_2 = gpu_frame_2.__mul__(vector[2])
     gpu_dot = gpu_dot_0.__add__(gpu_dot_1)
+    gpu_dot_0.gpudata.free()
+    gpu_dot_1.gpudata.free()
     gpu_dot_res = gpu_dot.__add__(gpu_dot_2)
+    gpu_dot_2.gpudata.free()
+    gpu_dot.gpudata.free()
     gpu_sin = gpumath.sin(gpu_dot_res)
     gpu_cos = gpumath.cos(gpu_dot_res)
     gpu_imag = gpu_sin.__mul__(gpu_factor)
+    gpu_sin.gpudata.free()
     gpu_real = gpu_cos.__mul__(gpu_factor)
+    gpu_cos.gpudata.free()
     g_real = gpuarray.sum(gpu_real)
+    gpu_real.gpudata.free()
     g_imag = gpuarray.sum(gpu_imag)
+    gpu_imag.gpudata.free()
     return g_real.get(), g_imag.get()
 
 def atom_factor_compute(data, module, groups_array):
@@ -96,6 +104,8 @@ def intensities_compute(protein_frames, buffer_frames, data, v_m):
 def intensity_one_module(protein_frames, buffer_frames, atom_factors, uniforn_vectors, vector_module,cell_size):
     t1 = time.time()
     intensity = 0
+    intensity_one = 0
+    intensity_two = 0
     f_len_a = len(protein_frames[3])
     f_len_b = len(buffer_frames[3])
     num_wat_mols = 0
@@ -127,6 +137,8 @@ def intensity_one_module(protein_frames, buffer_frames, atom_factors, uniforn_ve
         a_mean_mod_2 = a_mean_mod_2 / f_len_a
         b_mean_mod_2 = b_mean_mod_2 / f_len_b
         intensity += a_mean_mod_2 - b_mean_mod_2
+        intensity_one += a_mean_mod_2
+        intensity_two += b_mean_mod_2
     print('for q =' + str(vector_module) + ' intensity = ' +
           str(intensity) + 'Time spent on the intensity computing(s) = ' +
           str((math.ceil((time.time() - t1) * 10) * 0.1)))
@@ -135,3 +147,5 @@ def intensity_one_module(protein_frames, buffer_frames, atom_factors, uniforn_ve
                         str(math.floor((vector_module + 0.0001) * 1000.0) / 1000.0) + "_NZ=" +
                         str(config.N_Z) + "_NFI=" + str(config.N_FI) + "_P@Wfr = " + str(f_len_a) + "_CWfr = " +
                         str(f_len_b) + "_indent = " + str(config.INDENT) + ".rslt")
+
+     

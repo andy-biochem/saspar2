@@ -64,11 +64,14 @@ def trim():
 		border_max_z = float(lines[8])
 	else:
 		if config.MULIT_MODEL_FILE.upper() == 'YES':
-			fname = os.listdir(config.AMINO_PATH)[0]
-			if fname.endswith('gz'):
-				prot_file = gzip.open(config.AMINO_PATH+fname,mode='rt')
+			if os.path.isdir(config.AMINO_PATH):
+				fname =config.AMINO_PATH+os.listdir(config.AMINO_PATH)[0]
 			else:
-				prot_file = open(config.AMINO_PATH+fname,mode='rt')
+				fname = config.AMINO_PATH
+			if fname.endswith('gz'):
+				prot_file = gzip.open(fname,mode='rt')
+			else:
+				prot_file = open(fname,mode='rt')
 			line = prot_file.readline()
 			model_num = 0
 			current_mdl = []
