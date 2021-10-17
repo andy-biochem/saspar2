@@ -1,0 +1,8 @@
+N NH 
+CA CH
+C C
+O O
+CB CH
+OG1 OH
+CG2 CH3
+OXT OH

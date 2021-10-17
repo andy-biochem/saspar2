@@ -1,9 +1,0 @@
-N NH 
-CA CH
-C C
-O O
-CB CH2
-CG CH2
-E S
-CE CH3
-OXT OH

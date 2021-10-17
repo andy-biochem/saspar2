@@ -1,5 +1,0 @@
-S S
-O1 O
-O2 O
-O3 O
-O4 O

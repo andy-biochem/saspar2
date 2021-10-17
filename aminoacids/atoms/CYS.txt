@@ -1,7 +1,0 @@
-N NH 
-CA CH
-C C
-O O
-CB CH2
-SG SH
-OXT OH

@@ -1,0 +1,9 @@
+CH	7	C:H
+CH2	8	C:H:H
+CH3	9	C:H:H:H
+NH	8	N:H
+NH2	9	N:H:H
+NH3	10	C:H:H:H
+OH	9	O:H
+OH2	10	O:H:H
+SH	17	S:H
